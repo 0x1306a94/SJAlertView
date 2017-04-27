@@ -48,9 +48,12 @@ static NSString *const kFontName              = @"Helvetica";
         self.view.frame = [UIScreen mainScreen].bounds;
         self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Warc-retain-cycles"
         self.strongSelf = ^id{
             return self;
         };
+#pragma clang diagnostic pop
         [self comminit];
     }
     return self;

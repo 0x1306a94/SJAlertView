@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		3C74FE331EB231F9008A5FA3 /* SJAlertView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3C74FE321EB231F9008A5FA3 /* SJAlertView.podspec */; };
 		3CFFE60B1EB195E00026E571 /* SJAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CFFE6091EB195E00026E571 /* SJAlertView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CFFE6121EB196ED0026E571 /* SJAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFFE6111EB196ED0026E571 /* SJAlertView.m */; };
 		3CFFE6141EB1B27B0026E571 /* AnimatableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CFFE6131EB1B27B0026E571 /* AnimatableView.h */; };
@@ -66,6 +67,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C74FE321EB231F9008A5FA3 /* SJAlertView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SJAlertView.podspec; sourceTree = "<group>"; };
 		3CFFE6061EB195E00026E571 /* SJAlertView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SJAlertView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CFFE6091EB195E00026E571 /* SJAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SJAlertView.h; sourceTree = "<group>"; };
 		3CFFE60A1EB195E00026E571 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		3CFFE5FC1EB195E00026E571 = {
 			isa = PBXGroup;
 			children = (
+				3C74FE321EB231F9008A5FA3 /* SJAlertView.podspec */,
 				3CFFE6081EB195E00026E571 /* SJAlertView */,
 				3CFFE61E1EB1B8D90026E571 /* SJAlertViewDemo */,
 				3CFFE6071EB195E00026E571 /* Products */,
@@ -273,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C74FE331EB231F9008A5FA3 /* SJAlertView.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
