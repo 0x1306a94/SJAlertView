@@ -37,10 +37,12 @@
     
 //    [SJAlertView showAlert:@"Good, King" subTitle:@" 啊控件索卡均富凯爱康科技奥卡福建安费捡垃圾刷卡缴费卡,拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路" alertStyle:SJAlertStyleSuccess];
     
-    [SJAlertView showAlert:@"Good, King" subTitle:@"拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路" button:@"OK" otherButton:@"Good, King" alertStyle:SJAlertStyleSuccess action:^(BOOL b){
+    SJAlertView *alert = [SJAlertView showAlert:@"Good, King" subTitle:@"拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路" button:nil otherButton:nil alertStyle:SJAlertStyleSuccess action:^(BOOL b){
         
         [SJAlertView showAlertSubTitle:@"拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路"];
     }];
+    
+    [alert autoDisappear:YES delayDuration:2.0];
 }
 
 

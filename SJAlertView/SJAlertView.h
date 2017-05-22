@@ -48,4 +48,6 @@ typedef NS_ENUM(NSUInteger, SJAlertStyle) {
 + (SJAlertView *)showAlert:(NSString *)title subTitle:(NSString *)subTitle button:(NSString *)buttonTitle otherButton:(NSString *)otherButtonTitle alertStyle:(SJAlertStyle)style action:(void(^)(BOOL isOtherButtonClick))action;
 
 + (SJAlertView *)showAlert:(NSString *)title subTitle:(NSString *)subTitle button:(NSString *)buttonTitle otherButton:(NSString *)otherButtonTitle buttonColor:(UIColor *)buttonColor otherButtonColor:(UIColor *)otherButtonColor alertStyle:(SJAlertStyle)style action:(void(^)(BOOL isOtherButtonClick))action;
+
+- (void)autoDisappear:(BOOL)autoDisappear delayDuration:(CGFloat)delayDuration;
 @end

@@ -33,6 +33,9 @@ static NSString *const kFontName              = @"Helvetica";
 @property (nonatomic, strong) UITextView *subTitleTextView;
 @property (nonatomic, strong) UIView<AnimatableView> *animatedView;
 @property (nonatomic, strong) NSMutableArray<UIButton *> *buttons;
+
+@property (nonatomic, assign) BOOL autoDisappear;
+@property (nonatomic, assign) BOOL delayDuration;
 @end
 
 @implementation SJAlertView
@@ -216,6 +219,12 @@ static NSString *const kFontName              = @"Helvetica";
                 }
             } completion:^(BOOL finished) {
                 self.contentView.transform = previousTransform;
+                
+                if (self.autoDisappear) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self closeAlert:nil];
+                    });
+                }
             }];
         }];
     }];
@@ -235,7 +244,7 @@ static NSString *const kFontName              = @"Helvetica";
         [self clearAlert];
         // 置空block 保证当前弹框正常释放
         self.strongSelf = nil;
-        if (btn && self.action) {
+        if (self.action) {
             self.action(btn.tag == 1);
         }
     }];
@@ -255,19 +264,19 @@ static NSString *const kFontName              = @"Helvetica";
     return [self showAlert:title alertStyle:SJAlertStyleNone];
 }
 + (SJAlertView *)showAlert:(NSString *)title alertStyle:(SJAlertStyle)style {
-    return [self showAlert:title subTitle:nil button:@"OK" otherButton:nil alertStyle:style];
+    return [self showAlert:title subTitle:nil button:nil otherButton:nil alertStyle:style];
 }
 + (SJAlertView *)showAlert:(NSString *)title subTitle:(NSString *)subTitle {
     return [self showAlert:title subTitle:subTitle alertStyle:SJAlertStyleNone];
 }
 + (SJAlertView *)showAlert:(NSString *)title subTitle:(NSString *)subTitle alertStyle:(SJAlertStyle)style {
-    return [self showAlert:title subTitle:subTitle button:@"OK" otherButton:nil alertStyle:style];
+    return [self showAlert:title subTitle:subTitle button:nil otherButton:nil alertStyle:style];
 }
 + (SJAlertView *)showAlertSubTitle:(NSString *)subTitle {
     return [self showAlertSubTitle:subTitle alertStyle:SJAlertStyleNone];
 }
 + (SJAlertView *)showAlertSubTitle:(NSString *)subTitle alertStyle:(SJAlertStyle)style {
-    return [self showAlert:nil subTitle:subTitle button:@"OK" otherButton:nil alertStyle:style];
+    return [self showAlert:nil subTitle:subTitle button:nil otherButton:nil alertStyle:style];
 }
 + (SJAlertView *)showAlert:(NSString *)title button:(NSString *)buttonTitle {
     return [self showAlert:title subTitle:nil button:buttonTitle otherButton:nil alertStyle:SJAlertStyleNone];
@@ -368,5 +377,9 @@ static NSString *const kFontName              = @"Helvetica";
     [alert animateAlert];
     return alert;
     
+}
+- (void)autoDisappear:(BOOL)autoDisappear delayDuration:(CGFloat)delayDuration {
+    self.autoDisappear = autoDisappear;
+    self.delayDuration = delayDuration;
 }
 @end
