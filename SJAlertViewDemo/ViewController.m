@@ -42,7 +42,7 @@
         [SJAlertView showAlertSubTitle:@"拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路拉放假啦会计分录马拉加放辣椒开饭啦,卡拉飞机啊浪费空间阿里,楼房吉安路"];
     }];
     
-    [alert autoDisappear:YES delayDuration:2.0];
+//    [alert autoDisappear:YES delayDuration:2.0];
 }
 
 

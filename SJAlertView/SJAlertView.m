@@ -30,7 +30,7 @@ static NSString *const kFontName              = @"Helvetica";
 @property (nonatomic, strong) void(^action)(BOOL isOtherButtonClick);
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UILabel *titleLabelView;
-@property (nonatomic, strong) UITextView *subTitleTextView;
+@property (nonatomic, strong) UILabel *subTitleView;
 @property (nonatomic, strong) UIView<AnimatableView> *animatedView;
 @property (nonatomic, strong) NSMutableArray<UIButton *> *buttons;
 
@@ -83,12 +83,11 @@ static NSString *const kFontName              = @"Helvetica";
     self.titleLabelView.textAlignment = NSTextAlignmentCenter;
 }
 - (void)setupSubTitleTextView {
-    self.subTitleTextView = [[UITextView alloc] init];
-    self.subTitleTextView.textAlignment = NSTextAlignmentCenter;
-    self.subTitleTextView.textColor = [UIColor blackColor];
-    self.subTitleTextView.font = [UIFont fontWithName:kFontName size:16];
-    self.subTitleTextView.editable = NO;
-    self.subTitleTextView.scrollEnabled  = NO;
+    self.subTitleView = [[UILabel alloc] init];
+    self.subTitleView.numberOfLines = 0;
+    self.subTitleView.textAlignment = NSTextAlignmentCenter;
+    self.subTitleView.textColor = [UIColor blackColor];
+    self.subTitleView.font = [UIFont fontWithName:kFontName size:16];
 }
 
 - (void)comminit {
@@ -116,14 +115,14 @@ static NSString *const kFontName              = @"Helvetica";
     }
     
     
-    if (self.subTitleTextView.text.length > 0) {
-        CGSize stringSize = [self.subTitleTextView.text boundingRectWithSize:CGSizeMake(w, 0.0)
+    if (self.subTitleView.text.length > 0) {
+        CGSize stringSize = [self.subTitleView.text boundingRectWithSize:CGSizeMake(w, 0.0)
                                                                      options:NSStringDrawingUsesLineFragmentOrigin
-                                                                  attributes:@{NSFontAttributeName : self.subTitleTextView.font}
+                                                                  attributes:@{NSFontAttributeName : self.subTitleView.font}
                                                                      context:nil].size;
         CGFloat textViewHeight = ceil(stringSize.height) + 10.0;
-        self.subTitleTextView.frame = CGRectMake(x, y, w, textViewHeight);
-        [self.contentView addSubview:self.subTitleTextView];
+        self.subTitleView.frame = CGRectMake(x, y, w, textViewHeight);
+        [self.contentView addSubview:self.subTitleView];
         y += textViewHeight + kHeightMargin;
     }
     
@@ -176,9 +175,9 @@ static NSString *const kFontName              = @"Helvetica";
         if (y > kMaxHeight) {
             
             CGFloat diff = y - kMaxHeight;
-            CGRect origFrame = self.subTitleTextView.frame;
+            CGRect origFrame = self.subTitleView.frame;
             origFrame.size.height = origFrame.size.height - diff;
-            self.subTitleTextView.frame = origFrame;
+            self.subTitleView.frame = origFrame;
             
             if (self.buttons && self.buttons.count > 0) {
                 for (UIButton *btn in self.buttons) {
@@ -338,7 +337,7 @@ static NSString *const kFontName              = @"Helvetica";
     [alert setupTitleLabel];
     [alert setupSubTitleTextView];
     alert.titleLabelView.text = title;
-    alert.subTitleTextView.text = subTitle;
+    alert.subTitleView.text = subTitle;
     
     if (buttonTitle || otherButtonTitle) {
         

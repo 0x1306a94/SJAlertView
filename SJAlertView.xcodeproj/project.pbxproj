@@ -247,6 +247,7 @@
 					};
 					3CFFE61C1EB1B8D90026E571 = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 492U995837;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -514,6 +515,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 492U995837;
 				INFOPLIST_FILE = SJAlertViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.king129.SJAlertViewDemo;
@@ -525,6 +527,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 492U995837;
 				INFOPLIST_FILE = SJAlertViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.king129.SJAlertViewDemo;
@@ -542,6 +545,7 @@
 				3C74FE2D1EB22D6F008A5FA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3CFFE6001EB195E00026E571 /* Build configuration list for PBXProject "SJAlertView" */ = {
 			isa = XCConfigurationList;
