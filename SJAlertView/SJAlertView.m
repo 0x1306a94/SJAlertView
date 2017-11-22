@@ -116,10 +116,7 @@ static NSString *const kFontName              = @"Helvetica";
     
     
     if (self.subTitleView.text.length > 0) {
-        CGSize stringSize = [self.subTitleView.text boundingRectWithSize:CGSizeMake(w, 0.0)
-                                                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                                                  attributes:@{NSFontAttributeName : self.subTitleView.font}
-                                                                     context:nil].size;
+        CGSize stringSize = [self.subTitleTextView sizeThatFits:CGSizeMake(w, CGFLOAT_MAX)];
         CGFloat textViewHeight = ceil(stringSize.height) + 10.0;
         self.subTitleView.frame = CGRectMake(x, y, w, textViewHeight);
         [self.contentView addSubview:self.subTitleView];
