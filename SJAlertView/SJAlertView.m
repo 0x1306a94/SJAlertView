@@ -25,17 +25,15 @@ static CGFloat const kButtonMaxWidth          = 135.0;
 static NSString *const kFontName              = @"Helvetica";
 
 @interface SJAlertView ()
-/** 利用block 的特性 保证当前弹框不被释放 */
 @property (nonatomic, strong) id(^strongSelf)();
-@property (nonatomic, strong) void(^action)(BOOL isOtherButtonClick);
+@property (nonatomic, copy) void(^action)(BOOL isOtherButtonClick);
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UILabel *titleLabelView;
 @property (nonatomic, strong) UILabel *subTitleView;
 @property (nonatomic, strong) UIView<AnimatableView> *animatedView;
-@property (nonatomic, strong) NSMutableArray<UIButton *> *buttons;
+@property (nonatomic, strong) NSMutableArray<NSValue *> *buttons;
 
-@property (nonatomic, assign) BOOL autoDisappear;
-@property (nonatomic, assign) BOOL delayDuration;
+@property (nonatomic, assign) NSTimeInterval delayDuration;
 @end
 
 @implementation SJAlertView
@@ -53,6 +51,7 @@ static NSString *const kFontName              = @"Helvetica";
         self.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Warc-retain-cycles"
+        // The use of block features to ensure that the current box object is not released during the show
         self.strongSelf = ^id{
             return self;
         };
@@ -126,7 +125,8 @@ static NSString *const kFontName              = @"Helvetica";
     
     if (self.buttons && self.buttons.count > 0) {
         NSMutableArray<NSNumber *> *buttonWidths = [NSMutableArray<NSNumber *> array];
-        for (UIButton *button in self.buttons) {
+        for (NSValue *value in self.buttons) {
+            UIButton *button = (UIButton *)value;
             NSString *str = [button titleForState:UIControlStateNormal];
             CGFloat w = [str boundingRectWithSize:CGSizeMake(135, 0.0)
                                           options:NSStringDrawingUsesLineFragmentOrigin
@@ -139,7 +139,7 @@ static NSString *const kFontName              = @"Helvetica";
         switch (buttonWidths.count) {
             case 1:
             {
-                UIButton *btn = self.buttons.firstObject;
+                UIButton *btn = (UIButton *)self.buttons.firstObject.nonretainedObjectValue;
                 CGFloat w = buttonWidths.firstObject.floatValue;
                 btn.frame = CGRectMake((kContentWidth - w) * 0.5, y, w, kButtonHeight);
                 y += kButtonHeight + kHeightMargin;
@@ -147,8 +147,8 @@ static NSString *const kFontName              = @"Helvetica";
             }
             case 2:
             {
-                UIButton *fristBtn = self.buttons.firstObject;
-                UIButton *lastBtn = self.buttons.lastObject;
+                UIButton *fristBtn = (UIButton *)self.buttons.firstObject.nonretainedObjectValue;
+                UIButton *lastBtn = (UIButton *)self.buttons.lastObject.nonretainedObjectValue;
                 CGFloat firstW = buttonWidths.firstObject.floatValue;
                 CGFloat lastW = buttonWidths.lastObject.floatValue;
                 
@@ -177,7 +177,8 @@ static NSString *const kFontName              = @"Helvetica";
             self.subTitleView.frame = origFrame;
             
             if (self.buttons && self.buttons.count > 0) {
-                for (UIButton *btn in self.buttons) {
+                for (NSValue *value in self.buttons) {
+                    UIButton *btn = (UIButton *)value.nonretainedObjectValue;
                     origFrame = btn.frame;
                     origFrame.origin.y = origFrame.origin.y - diff;
                     btn.frame = origFrame;
@@ -216,7 +217,7 @@ static NSString *const kFontName              = @"Helvetica";
             } completion:^(BOOL finished) {
                 self.contentView.transform = previousTransform;
                 
-                if (self.autoDisappear) {
+                if (self.delayDuration > 0.0) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [self closeAlert:nil];
                     });
@@ -228,7 +229,12 @@ static NSString *const kFontName              = @"Helvetica";
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (!self.buttons || self.buttons.count == 0) {
-        [self closeAlert:nil];
+        UITouch *touch = [touches anyObject];
+        CGPoint point = [touch locationInView:touch.view];
+        point = [self.contentView convertPoint:point toView:self.view];
+        if (!CGRectContainsPoint(self.contentView.frame, point)) {
+            [self closeAlert:nil];
+        }
     }
 }
 - (void)closeAlert:(UIButton *)btn {
@@ -238,10 +244,11 @@ static NSString *const kFontName              = @"Helvetica";
     } completion:^(BOOL finished) {
         [self.view removeFromSuperview];
         [self clearAlert];
-        // 置空block 保证当前弹框正常释放
+        // Empty block to ensure the current frame object normal release
         self.strongSelf = nil;
         if (self.action) {
             self.action(btn.tag == 1);
+            self.action = nil;
         }
     }];
 }
@@ -252,6 +259,8 @@ static NSString *const kFontName              = @"Helvetica";
     }
     [self.contentView removeFromSuperview];
     self.contentView = nil;
+    [self.buttons removeAllObjects];
+    self.buttons = nil;
 }
 
 #pragma mark -public
@@ -309,7 +318,7 @@ static NSString *const kFontName              = @"Helvetica";
     [keyWindow addSubview:alert.view];
     [keyWindow bringSubviewToFront:alert.view];
     alert.view.frame = keyWindow.bounds;
-    alert.action = action;
+    alert.action = [action copy];
     switch (style) {
         case SJAlertStyleSuccess:
         {
@@ -338,7 +347,7 @@ static NSString *const kFontName              = @"Helvetica";
     
     if (buttonTitle || otherButtonTitle) {
         
-        alert.buttons = [NSMutableArray<UIButton *> array];
+        alert.buttons = [NSMutableArray<NSValue *> array];
         if (buttonTitle.length > 0) {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             [button setTitle:buttonTitle forState:UIControlStateNormal];
@@ -350,7 +359,8 @@ static NSString *const kFontName              = @"Helvetica";
             button.layer.masksToBounds = YES;
             [button addTarget:alert action:@selector(closeAlert:) forControlEvents:UIControlEventTouchUpInside];
             [alert.contentView addSubview:button];
-            [alert.buttons addObject:button];
+            NSValue *value = [NSValue valueWithNonretainedObject:button];
+            [alert.buttons addObject:value];
         }
         
         if (otherButtonTitle.length > 0) {
@@ -364,7 +374,8 @@ static NSString *const kFontName              = @"Helvetica";
             otherButton.backgroundColor = otherButtonColor;
             [otherButton addTarget:alert action:@selector(closeAlert:) forControlEvents:UIControlEventTouchUpInside];
             [alert.contentView addSubview:otherButton];
-            [alert.buttons addObject:otherButton];
+            NSValue *value = [NSValue valueWithNonretainedObject:otherButton];
+            [alert.buttons addObject:value];
         }
     }
     
@@ -374,8 +385,7 @@ static NSString *const kFontName              = @"Helvetica";
     return alert;
     
 }
-- (void)autoDisappear:(BOOL)autoDisappear delayDuration:(CGFloat)delayDuration {
-    self.autoDisappear = autoDisappear;
+- (void)autoDisappearWithDelayDuration:(NSTimeInterval)delayDuration {
     self.delayDuration = delayDuration;
 }
 @end

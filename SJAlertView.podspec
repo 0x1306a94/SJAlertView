@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
         s.name             = 'SJAlertView'
-        s.version          = '0.0.1'
+        s.version          = '0.0.2'
         s.summary          = 'SJAlertView'
         s.homepage         = 'https://github.com/king129/SJAlertView'
         s.license          = { :type => 'MIT', :file => 'LICENSE' }
