@@ -126,7 +126,7 @@ static NSString *const kFontName              = @"Helvetica";
     if (self.buttons && self.buttons.count > 0) {
         NSMutableArray<NSNumber *> *buttonWidths = [NSMutableArray<NSNumber *> array];
         for (NSValue *value in self.buttons) {
-            UIButton *button = (UIButton *)value.nonretainedObjectValue;
+            UIButton *button = (UIButton *)value;
             NSString *str = [button titleForState:UIControlStateNormal];
             CGFloat w = [str boundingRectWithSize:CGSizeMake(135, 0.0)
                                           options:NSStringDrawingUsesLineFragmentOrigin
